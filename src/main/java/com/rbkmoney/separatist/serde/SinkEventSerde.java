@@ -1,6 +1,7 @@
 package com.rbkmoney.separatist.serde;
 
 import com.rbkmoney.machinegun.eventsink.SinkEvent;
+import com.rbkmoney.serializer.ThriftSerializer;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serializer;
@@ -21,7 +22,7 @@ public class SinkEventSerde implements Serde<SinkEvent> {
 
     @Override
     public Serializer<SinkEvent> serializer() {
-        return new SinkEventSerializer();
+        return new ThriftSerializer<>();
     }
 
     @Override

@@ -4,8 +4,8 @@ import com.rbkmoney.machinegun.eventsink.MachineEvent;
 import com.rbkmoney.machinegun.eventsink.SinkEvent;
 import com.rbkmoney.separatist.config.DeduplicationClientConfig;
 import com.rbkmoney.separatist.serde.SinkEventDeserializer;
-import com.rbkmoney.separatist.serde.SinkEventSerializer;
 import com.rbkmoney.separatist.stream.DeduplicationTopologyConfig;
+import com.rbkmoney.serializer.ThriftSerializer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -105,7 +105,7 @@ public class DeduplicationTopologyTest {
     }
 
     private void initInputTopic() {
-        ConsumerRecordFactory<String, SinkEvent> recordFactory = new ConsumerRecordFactory<>(inputTopic, new StringSerializer(), new SinkEventSerializer());
+        ConsumerRecordFactory<String, SinkEvent> recordFactory = new ConsumerRecordFactory<>(inputTopic, new StringSerializer(), new ThriftSerializer<SinkEvent>());
         List<ConsumerRecord<byte[], byte[]>> eventsToWrite = new ArrayList<>();
         for (int i = 0; i < TOTAL; i++) {
             for (int j = 0; j < TOTAL; j++) {

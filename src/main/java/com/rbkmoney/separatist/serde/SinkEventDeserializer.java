@@ -10,13 +10,7 @@ public class SinkEventDeserializer extends AbstractDeserializerAdapter<SinkEvent
     @Override
     public SinkEvent deserialize(String topic, byte[] data) {
         log.debug("Message, topic: {}, byteLength: {}", topic, data.length);
-        SinkEvent machineEvent = new SinkEvent();
-        try {
-            thriftDeserializer.get().deserialize(machineEvent, data);
-        } catch (Exception e) {
-            log.error("Error when deserialize SinkEvent data: {} ", data, e);
-        }
-        return machineEvent;
+        return deserialize(data, new SinkEvent());
     }
 
 }
