@@ -1,16 +1,12 @@
 package com.rbkmoney.separatist.config;
 
 import com.rbkmoney.separatist.serde.SinkEventSerde;
-import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.config.SslConfigs;
 import org.apache.kafka.common.security.auth.SecurityProtocol;
 import org.apache.kafka.common.serialization.Serdes;
-import org.apache.kafka.common.utils.Time;
 import org.apache.kafka.streams.StreamsConfig;
-import org.apache.kafka.streams.state.StoreBuilder;
-import org.apache.kafka.streams.state.Stores;
-import org.apache.kafka.streams.state.internals.KeyValueStoreBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,12 +14,12 @@ import org.springframework.context.annotation.Configuration;
 import java.io.File;
 import java.util.Properties;
 
+@Slf4j
 @Configuration
-@RequiredArgsConstructor
-public class KafkaConfig {
+public class DeduplicationClientConfig {
 
-    private static final String APP_ID = "separatist";
-    private static final String CLIENT_ID = "separatist-client-test";
+    private static final String APP_ID = "deduplication";
+    private static final String CLIENT_ID = "deduplication-client";
     public static final String PKCS_12 = "PKCS12";
     public static final String DEDUPLICATION_STORE = "deduplication-store";
 
@@ -88,14 +84,4 @@ public class KafkaConfig {
 
     }
 
-    @Bean
-    public StoreBuilder storeBuilder() {
-        return new KeyValueStoreBuilder<>(Stores.persistentKeyValueStore(DEDUPLICATION_STORE),
-                new Serdes.StringSerde(),
-                new Serdes.LongSerde(),
-                Time.SYSTEM);
-    }
-
-
 }
-

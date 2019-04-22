@@ -1,9 +1,9 @@
 package com.rbkmoney.separatist.listener;
 
-import com.rbkmoney.separatist.stream.DeduplicationStreamFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.streams.KafkaStreams;
+import org.apache.kafka.streams.Topology;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -16,21 +16,20 @@ import java.util.Properties;
 @RequiredArgsConstructor
 public class StartupListener implements ApplicationListener<ContextRefreshedEvent> {
 
-    private final DeduplicationStreamFactory deduplicationStreamFactory;
+    private final Topology deduplicationTopology;
     private final Properties deduplicationStreamProperties;
 
-    private KafkaStreams kafkaStreams;
+    private KafkaStreams deduplicationKafkaStream;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        kafkaStreams = deduplicationStreamFactory.create(deduplicationStreamProperties);
-        kafkaStreams.start();
-
-        log.info("StartupListener start stream kafkaStreams: {}", kafkaStreams.allMetadata());
+        deduplicationKafkaStream = new KafkaStreams(deduplicationTopology, deduplicationStreamProperties);
+        deduplicationKafkaStream.start();
+        log.info("StartupListener start stream kafkaStreams: {}", deduplicationKafkaStream.allMetadata());
     }
 
     public void stop() {
-        kafkaStreams.close(Duration.ofSeconds(60L));
+        deduplicationKafkaStream.close(Duration.ofSeconds(60L));
     }
 
 } 

@@ -1,7 +1,7 @@
 package com.rbkmoney.separatist.transformer;
 
 import com.rbkmoney.machinegun.eventsink.SinkEvent;
-import com.rbkmoney.separatist.config.KafkaConfig;
+import com.rbkmoney.separatist.config.DeduplicationClientConfig;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.kstream.Transformer;
 import org.apache.kafka.streams.processor.ProcessorContext;
@@ -17,7 +17,7 @@ public class DeduplicationTransformer implements Transformer<String, SinkEvent, 
     @SuppressWarnings("unchecked")
     public void init(final ProcessorContext context) {
         this.context = context;
-        this.lastEventStore = (KeyValueStore<String, Long>) context.getStateStore(KafkaConfig.DEDUPLICATION_STORE);
+        this.lastEventStore = (KeyValueStore<String, Long>) context.getStateStore(DeduplicationClientConfig.DEDUPLICATION_STORE);
     }
 
     @Override
