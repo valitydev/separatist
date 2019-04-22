@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = SeparatistApplication.class)
-public class SeparatistApplicationTest {
+public class SeparatistApplicationTest extends KafkaAbstractTest {
 
     @Test
     public void contextLoads() {
